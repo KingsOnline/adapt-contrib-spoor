@@ -1,27 +1,24 @@
-<!--[if IE]><![endif]-->
 <!doctype html>
-<!--[if IE 7 ]><html id="adapt" class="ie ie7 no-js" lang="en"><![endif]-->
-<!--[if IE 8 ]><html id="adapt" class="ie ie8 no-js" lang="en"><![endif]-->
-<!--[if IE 9 ]><html id="adapt" class="ie ie9 no-js" lang="en"><![endif]-->
-<!--[if gt IE 9]><!--><html id="adapt" class="no-js" lang="en"><!--<![endif]-->
-    <head>
-        <script type="text/javascript">
-            window.ISCOOKIELMS = false;
-        </script>
-        <script src="offline_API_wrapper.js" type="text/javascript"></script>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title></title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-        <link href="adapt/css/adapt.css" type="text/css" rel="stylesheet">
-        <script src="libraries/modernizr.js" type="text/javascript"></script>
-        <script src="adapt/js/scriptLoader.js" type="text/javascript"></script>
-    </head>
+<html>
 
-    <body>
-        <button id="accessibility-toggle" class="base button a11y-ignore-focus"></button>
-        <span id="accessibility-instructions" class="aria-label" role="region" tabindex="0"></span>
-        <div id="wrapper">
-        </div>
-    </body>
+<head>
+    <title>Launching course...</title>
+    <script>
+        function launchCourse() {
+            window.open("index.html", "adaptWin", "width=950,menubar=no,location=no,directories=no,resizable=yes,scrollbars=yes");
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body onload="launchCourse()">
+    <h2>The course should now open in a new window.</h2>
+    <p>If this does not occur please check your pop-up blocker settings and <a href="#" onclick="launchCourse()">click here</a> to try again.</p>
+</body>
+
 </html>
