@@ -44,7 +44,10 @@ define([
         },
 
         onDataReady: function() {
-            adaptStatefulSession.initialize();
+            Adapt.trigger('plugin:beginWait');
+            adaptStatefulSession.initialize(function() {
+                Adapt.trigger('plugin:endWait');
+            });
         },
 
         checkConfig: function() {
@@ -117,6 +120,14 @@ define([
             });
         },
 
+        removeEventListeners: function() {
+            $(window).off('beforeunload unload', this._onWindowUnload);
+
+            if (document.removeEventListener) {
+                document.removeEventListener("visibilitychange", this.onVisibilityChange);
+            }
+        },
+
         onVisibilityChange: function() {
             if (document.visibilityState === "hidden") scorm.commit();
         },
@@ -124,9 +135,11 @@ define([
     //Session End
 
         onWindowUnload: function() {
-            $(window).off('beforeunload unload', this._onWindowUnload);
+            this.removeEventListeners();
 
-            scorm.finish();
+            if (!scorm.finishCalled){
+                scorm.finish();
+            }
         }
         
     }, Backbone.Events);

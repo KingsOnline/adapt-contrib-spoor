@@ -196,7 +196,10 @@ define (function(require) {
 			this.setValue("cmi.score.raw", _score);
 			this.setValue("cmi.score.min", _minScore);
 			this.setValue("cmi.score.max", _maxScore);
-			this.setValue("cmi.score.scaled", _score / 100);
+
+			var range = _maxScore - _minScore;
+			var scaledScore = ((_score - _minScore) / range).toFixed(7);
+			this.setValue("cmi.score.scaled", scaledScore);
 		}
 		else {
 			this.setValue("cmi.core.score.raw", _score);
@@ -229,6 +232,16 @@ define (function(require) {
 
 	ScormWrapper.prototype.getStudentId = function(){
 		return this.getValue(this.isSCORM2004() ? "cmi.learner_id":"cmi.core.student_id");
+	};
+	
+	ScormWrapper.prototype.setLanguage = function(_lang){
+		if(this.isSCORM2004()) {
+			this.setValue("cmi.learner_preference.language", _lang);
+		} else {
+			if(this.isSupported("cmi.student_preference.language")) {
+				this.setValue("cmi.student_preference.language", _lang);
+			}
+		}
 	};
 
 	ScormWrapper.prototype.commit = function() {
@@ -632,23 +645,12 @@ define (function(require) {
 		return [hours, min, sec].join(":");
 	};
 
-	ScormWrapper.prototype.getISO8601Timestamp = function() {
-	
-		var date = new Date();
-		
-		var ymd = [
-			date.getFullYear(),
-			this.padWithZeroes(date.getMonth()+1,2),
-			this.padWithZeroes(date.getDate(),2)
-		].join("-");
-
-		var hms = [
-			this.padWithZeroes(date.getHours(),2),
-			this.padWithZeroes(date.getMinutes(),2),
-			this.padWithZeroes(date.getSeconds(),2)
-		].join(":");
-
-		return ymd + "T" + hms;
+	/**
+	* returns the current date & time in the format YYYY-MM-DDTHH:mm:ss 
+	*/
+	ScormWrapper.prototype.getISO8601Timestamp = function() {		
+		var date = new Date().toISOString();
+		return date.replace(/.\d\d\dZ/, "");//Date.toISOString returns the date in the format YYYY-MM-DDTHH:mm:ss.sssZ so we need to drop the last bit to make it SCORM 2004 conformant
 	};
 
 	ScormWrapper.prototype.padWithZeroes = function(numToPad, padBy) {

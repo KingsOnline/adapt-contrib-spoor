@@ -59,8 +59,7 @@ The attributes listed below are used in *config.json* to configure **Spoor**, an
 
 **_spoor**: (object): The Spoor object that contains values for **_isEnabled**, **_tracking**, **_reporting**, and **_advancedSettings**.
  
->**_isEnabled** (boolean): Enables/disables the **Spoor** extension. If set to `true` (the default value), the plugin will try to connect to a SCORM conformant LMS on course launch. If one is not available, a 'Could not connect to LMS' error message will be displayed. This error may be ignored, or it may be avoided entirely by setting this to `false`. Disabling tracking in this way can be very helpful during course development (when running the course from a local server rather than an LMS) or if you have a course that needs to be able to run on an LMS or a web server.
-
+>**_isEnabled** (boolean): Enables/disables the **Spoor** extension. If set to `true` (the default value), the plugin will try to connect to a SCORM conformant LMS when the course is launched via *index_lms.html*. If one is not available, a 'Could not connect to LMS' error message will be displayed. This error can be avoided during course development either by setting this to `false` or - more easily - by launching the course via *index.html* or *main.html*. This latter technique is also useful if you are developing a course that could be run either from an LMS or a regular web server.
 
 >>**_requireCourseCompleted** (boolean): Determines whether the learner must complete all the components in the course before the course can be marked as finished in the LMS. Acceptable values are `true` or `false`. The default is `false`.    
 
@@ -78,7 +77,7 @@ The attributes listed below are used in *config.json* to configure **Spoor**, an
 
 >>**_onAssessmentFailure** (string): Specifies the status that is reported to the LMS when the assessment is failed. Acceptable values are `"failed"` and `"incomplete"`. Some Learning Management Systems will prevent the user from making further attempts at the course after status has been set to `"failed"`. Therefore, it is common to set this to `"incomplete"` to allow the user more attempts to pass an assessment.  
 
->>**_resetStatusOnLanguageChange** (boolean): If set to `true` the status of the course is set to "incomplete" when the languge is changed using the [adapt-contrib-langugePicker](https://github.com/adaptlearning/adapt-contrib-languagepicker) Plugin. Acceptable values are `true` or `false`. The default is `false`.       
+>>**_resetStatusOnLanguageChange** (boolean): If set to `true` the status of the course is set to "incomplete" when the languge is changed using the [adapt-contrib-languagePicker](https://github.com/adaptlearning/adapt-contrib-languagepicker) Plugin. Acceptable values are `true` or `false`. The default is `false`.       
 
 >**_advancedSettings** (object): The advanced settings attribute group contains values for **_scormVersion**, **_showDebugWindow**, **_commitOnStatusChange**, **_timedCommitFrequency**, **_maxCommitRetries**, and **_commitRetryDelay**.
 
@@ -100,21 +99,23 @@ The attributes listed below are used in *config.json* to configure **Spoor**, an
 
 <div float align=right><a href="#top">Back to Top</a></div>  
 
-###Running a course without tracking while Spoor is installed  
-- Use *main.html* instead of *index.html*.  
+### Running a course without tracking while Spoor is installed  
+- Use *main.html* or *index.html* instead of *index_lms.html*.  
 *OR*  
 - Set `"_isEnabled": false` in *config.json*.
 
-###Client Local Storage / Fake LMS / Adapt LMS Behaviour Testing
-When **Spoor** is installed, *scorm_test_harness.html* can be used instead of *index.html* to allow the browser to store LMS states inside a browser cookie. This allows developer to test LMS specified behaviour outside of an LMS environment. If you run the command `grunt server-scorm`, this will start a local server and run the course using *scorm_test_harness.html* for you.
+### Client Local Storage / Fake LMS / Adapt LMS Behaviour Testing
+When **Spoor** is installed, *scorm_test_harness.html* can be used instead of *index.html* to allow the browser to store LMS states inside a browser cookie. This allows developer to test LMS specified behaviour outside of an LMS environment. If you run the command `grunt server-scorm`, this will start a local server and run the course using *scorm_test_harness.html* for you. 
+
+Note that due to the data storage limitations of browser cookies, there is less storage space available than an LMS would provide. In particular having `_shouldRecordInteractions` enabled can cause a lot of data to be written to the cookie, using up the available storage more quickly - it is advised that you disable this setting when testing via *scorm_test_harness.html*. As of v2.1.1, a browser alert will be displayed if the code detects that the cookie storage limit has been exceeded.
 
 ## Limitations
  
 Currently (officially) only supports SCORM 1.2  
 
 ----------------------------
-**Version number:**  2.0.14   <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a> 
-**Framework versions:** 2.0.13
+**Version number:**  2.1.3   <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a> 
+**Framework versions:** 2.0.16+
 **Author / maintainer:** Adapt Core Team with [contributors](https://github.com/adaptlearning/adapt-contrib-spoor/graphs/contributors) 
 **Accessibility support:** n/a   
 **RTL support:** n/a  
